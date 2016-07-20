@@ -47,6 +47,9 @@ The api exposed by the server should be E2E tested with `chai-http`
 
 ## Bonus Points For More Fun:
 
+* App: *3pts*
+	* Server an index.html that displays data and allows users to manipulate using api methods
+
 * Reanimation: *2pts* 
 	* Persist your data store when server closes and read it when it starts
 	
