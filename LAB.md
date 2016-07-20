@@ -27,6 +27,8 @@ would remove resource `name_of_resource`
 
 Verbs that are missing expected arguments should respond with `400` status code.
 
+In-memory storage should always be asynchronous.
+
 The in-memory data storage module should be directly unit tested.
 
 The api exposed by the server should be E2E tested with `chai-http`
