@@ -22,5 +22,8 @@
   },
   "devDependencies": {
     "mocha": "^2.5.3"
+  },
+  "directories": {
+    "test": "test"
   }
 }

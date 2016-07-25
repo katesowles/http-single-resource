@@ -10,6 +10,15 @@ function sendResponse(status, content, response) {
   response.end();
 }
 
+function save (books) {
+  fs.writeFile('../data/books.json', JSON.stringify(books), function (err) {
+    if (err) {
+      return console.error(err);
+    }
+    console.log('this file was saved!');
+  });
+}
+
 module.exports = http.createServer( (request, response) => {
   var urlParts = request.url.split('?');
   var route = urlParts[0];
@@ -27,8 +36,10 @@ module.exports = http.createServer( (request, response) => {
 
     console.log('this\'ll work', queryString);
 
+    //////////////////////// GET ////////////////////////
+
     if (request.method === 'GET') {
-      var title = qv(queryString, 'title');
+      let title = qv(queryString, 'title');
       if (title != '') {
         books.forEach(book => {
           if (book.title.toLowerCase() == title) {
@@ -41,6 +52,8 @@ module.exports = http.createServer( (request, response) => {
         sendResponse(200, JSON.stringify(books), response);
       }
     }
+
+    //////////////////////// POST ////////////////////////
 
     else if (request.method === 'POST') {
       var body = '';
@@ -67,16 +80,38 @@ module.exports = http.createServer( (request, response) => {
         console.log('before', books.length);
         books.push(book);
         console.log('after', books.length);
+        save(books);
         sendResponse(200, JSON.stringify(book), response);
       });
     }
+
+    //////////////////////// PUT ////////////////////////
 
     else if (request.method === 'PUT') {
       sendResponse(400, 'PUT', response);
     }
 
+    //////////////////////// DELETE ////////////////////////
+
     else if (request.method === 'DELETE') {
-      sendResponse(400, 'DELETE', response);
+      // console.log('one');
+      // console.log('queryString', queryString);
+      let title = qv(queryString, 'title');
+      // console.log('title', title);
+
+      let deleteIndex = -1;
+      for (var i = 0; i< books.length; i++) {
+        if (books[i].title == title) {
+          deleteIndex = i;
+        }
+      }
+      books.remove(deleteIndex);
+
+
+
+
+
+      sendResponse(200, 'that book has been removed...', response);
     }
 
     else {

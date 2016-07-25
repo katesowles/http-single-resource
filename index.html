@@ -28,6 +28,7 @@
   </head>
   <body>
     <form method="POST" onsubmit="postIt(); return false;">
+      <h2>Use this form to ADD books...</h2>
   		<input name="title" placeholder="add book title here" />
       <input name="author" placeholder="add author here" />
       <input name="pubYear" placeholder="add year published here" />
@@ -36,6 +37,12 @@
       <input name="complete" placeholder="add completion (true / false) here" />
       <input name="method" placeholder="add read method (audiobook, ebook, print) here" />
   		<button type="submit">POST</button>
+  	</form>
+
+    <form method="POST" onsubmit="deleteIt(); return false;">
+      <h2>Use this field to DELETE books by title...</h2>
+  		<input name="titleToRemove" placeholder="add book title here" />
+  		<button type="submit">DELETE</button>
   	</form>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/superagent/2.1.0/superagent.min.js"></script>
@@ -55,7 +62,21 @@
   				.post('/books')
   				.send( book )
   				.end( ( error, response ) => {
-  					alert( response.text );
+  					alert( 'ERROR WITH POST', response.text );
+  				});
+  		}
+
+      function deleteIt() {
+        let toBeRemoved = {
+          title : document.querySelector( 'input[name=titleToRemove]').value
+        }
+  			// let titleToBeRemoved = document.querySelector( 'input[name=title]' ).value;
+        console.log('titleToBeRemoved', toBeRemoved.title);
+
+  			superagent
+  				.del(`/books?title=${toBeRemoved.title}`)
+  				.end( ( error, response ) => {
+  					alert( 'ERROR WITH DELETE: ', response.text );
   				});
   		}
   	</script>
